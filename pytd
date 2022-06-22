@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import argparse
+from pytube import YouTube
+import ffmpeg
+
+parser = argparse.ArgumentParser()
+parser.add_argument("usage", help="pydt YT link")
+parser.parse_args()
+
+def on_complete(stream, file_path):
+	print(stream)
+	print(file_path)
+
+def on_progress(stream, chunk, bytes_remaining):
+	print(100 - (bytes_remaining / stream.filesize * 100))
+
+link = sys.argv[1]
+tmp = "/tmp"
+final_path = "~/Downloads/Video"
+video_object = YouTube(
+	link, 
+	on_complete_callback = on_complete,
+	on_progress_callback = on_progress)
+
+
+try:
+	print("Downloading Video and audio")
+	video_only = video_object.streams.filter(resolution="1080p").first().download(tmp,"v.mp4")
+	audio_only = video_object.streams.filter(only_audio=True).first().download(tmp,"a.mp4")
+	print("completed")
+except:
+	print("error")
+
+v = ffmpeg.input(os.path.join(tmp,"v.mp4"))
+a = ffmpeg.input(os.path.join(tmp,"a.mp4"))
+t = video_object.title
+title = (t + ".mp4")
+
+va = ffmpeg.concat(v,a,v=1,a=1).output(os.path.join(final_path,title)).run()
+os.remove("/tmp/a.mp4")
+os.remove("/tmp/v.mp4")
