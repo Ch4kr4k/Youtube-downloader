@@ -2,6 +2,7 @@
 
 import os
 import sys
+from pathlib import Path
 import argparse
 from pytube import YouTube
 import ffmpeg
@@ -19,7 +20,9 @@ def on_progress(stream, chunk, bytes_remaining):
 
 link = sys.argv[1]
 tmp = "/tmp"
-final_path = "~/Downloads/Video"
+path=Path.home()
+path=str(path)
+final_path = (path + "/Downloads/Video")
 video_object = YouTube(
 	link, 
 	on_complete_callback = on_complete,
