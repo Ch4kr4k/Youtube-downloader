@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
 import os
+import os.path
 import sys
+import string
+import random
 from pathlib import Path
 import argparse
 from pytube import YouTube
@@ -19,29 +22,49 @@ def on_progress(stream, chunk, bytes_remaining):
 	print(100 - (bytes_remaining / stream.filesize * 100))
 
 link = sys.argv[1]
-tmp = "/tmp"
+tmp0 = "/tmp"
 path=Path.home()
 path=str(path)
 final_path = (path + "/Downloads/Video")
 video_object = YouTube(
 	link, 
 	on_complete_callback = on_complete,
-	on_progress_callback = on_progress)
+	on_progress_callback = on_progress )
 
-
+v = random.choice(string.ascii_lowercase)
+v = (v + ".mp4")
+a = random.choice(string.ascii_lowercase)
+a = (a + ".mp4")
+tmp = ("/tmp/"+ v)
+tmp1 = ("/tmp/"+ a)
 try:
 	print("Downloading Video and audio")
-	video_only = video_object.streams.filter(resolution="1080p").first().download(tmp,"v.mp4")
-	audio_only = video_object.streams.filter(only_audio=True).first().download(tmp,"a.mp4")
+	video_only = video_object.streams.filter(resolution="1080p").first().download(tmp0,v)
+	audio_only = video_object.streams.filter(only_audio=True).first().download(tmp0,a)
 	print("completed")
+except KeyboardInterrupt:
+	print("error download canceled")
+	exs = str(os.path.isfile(tmp))
+	exs1 = str(os.path.isfile(tmp1))
+	if (exs == "True"):
+		print("removing audio residue")
+		os.remove(tmp1)
+	if (exs1 == "True"):
+		print("removing video residue")
+		os.remove(tmp)
+	print("Removed")
+	exit()
 except:
-	print("error")
+	print("some error")
+	os.remove(tmp1)
+	os.remove(tmp)
+	exit()
 
-v = ffmpeg.input(os.path.join(tmp,"v.mp4"))
-a = ffmpeg.input(os.path.join(tmp,"a.mp4"))
+v = ffmpeg.input(os.path.join(tmp0,v))
+a = ffmpeg.input(os.path.join(tmp0,a))
 t = video_object.title
 title = (t + ".mp4")
 
 va = ffmpeg.concat(v,a,v=1,a=1).output(os.path.join(final_path,title)).run()
-os.remove("/tmp/a.mp4")
-os.remove("/tmp/v.mp4")
+os.remove(tmp1)
+os.remove(tmp)
