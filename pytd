@@ -11,7 +11,7 @@ from pytube import YouTube
 import ffmpeg
 
 parser = argparse.ArgumentParser()
-parser.add_argument("usage", help="pydt YT link")
+parser.add_argument("link", help="pydt YT link")
 parser.parse_args()
 
 def on_complete(stream, file_path):
@@ -37,23 +37,22 @@ a = random.choice(string.ascii_lowercase)
 a = (a + ".mp4")
 tmp = ("/tmp/"+ v)
 tmp1 = ("/tmp/"+ a)
+
+
 try:
 	print("Downloading Video and audio")
+	print(tmp)
 	video_only = video_object.streams.filter(resolution="1080p").first().download(tmp0,v)
+	print(tmp1)
 	audio_only = video_object.streams.filter(only_audio=True).first().download(tmp0,a)
 	print("completed")
-except KeyboardInterrupt:
-	print("error download canceled")
-	exs = str(os.path.isfile(tmp))
-	exs1 = str(os.path.isfile(tmp1))
-	if (exs == "True"):
-		print("removing audio residue")
-		os.remove(tmp1)
-	if (exs1 == "True"):
-		print("removing video residue")
-		os.remove(tmp)
+
+except KeyboardInterrupt:	
+	os.remove(tmp)			
+	os.remove(tmp1)	
 	print("Removed")
 	exit()
+
 except:
 	print("some error")
 	os.remove(tmp1)
@@ -64,7 +63,28 @@ v = ffmpeg.input(os.path.join(tmp0,v))
 a = ffmpeg.input(os.path.join(tmp0,a))
 t = video_object.title
 title = (t + ".mp4")
+res = (final_path +"/"+ title)
+print(res)
+try:
+    va = ffmpeg.concat(v,a,v=1,a=1).output(os.path.join(final_path,title)).run()
+    print("Concatenating Completed")
+except KeyboardInterrupt:
+    print("Canceled by user")
+    os.remove(tmp1)
+    os.remove(tmp)
+    os.remove(res)
+except:
+    print("some error occured")
+    os.remove(tmp1)
+    os.remove(tmp)
+    os.remove(res)
 
-va = ffmpeg.concat(v,a,v=1,a=1).output(os.path.join(final_path,title)).run()
-os.remove(tmp1)
-os.remove(tmp)
+exs2 = str(os.path.isfile(tmp))
+exs3 = str(os.path.isfile(tmp1))
+
+if (exs2 == "True"):
+	print("removing video residue")
+	os.remove(tmp)
+if (exs3 == "True"):
+	print("removing audio residue")
+	os.remove(tmp1)
