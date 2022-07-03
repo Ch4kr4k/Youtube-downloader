@@ -14,7 +14,13 @@ if pip install -r requirements.txt doesnt work do this
     	pip3 install ffmpeg-python
     	pip3 install pytube
 
-#### linking the executable libraries
+#### installation
+
+      git clone https://github.com/BL4CK-R34P3R/Youtube-downloader
+
+      cd Youtube-downloader
+
+      chmod +x pytd
 
     	sudo ln pytd /usr/local/bin
 
