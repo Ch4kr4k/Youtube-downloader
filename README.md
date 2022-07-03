@@ -1,4 +1,4 @@
-# Simple Youtube Downloader for linux
+# 1080p Simple Youtube Downloader for linux
 
 - first of all create a directory Video inside a download folder
 
@@ -16,13 +16,15 @@ if pip install -r requirements.txt doesnt work do this
 
 #### installation
 
-      git clone https://github.com/BL4CK-R34P3R/Youtube-downloader
+```bash
+git clone https://github.com/BL4CK-R34P3R/Youtube-downloader
 
-      cd Youtube-downloader
+cd Youtube-downloader
 
-      chmod +x pytd
+chmod +x pytd
 
-    	sudo ln pytd /usr/local/bin
+sudo ln pytd /usr/local/bin
+```
 
 ##### usage
 
