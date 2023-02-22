@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+function main(){
+	local OPTIND opt i
+	while getopts "l:r:h:" opt; do
+		case $opt in
+			l) l_="$OPTARG" ;;
+			r) r_="$OPTARG" ;;
+			\?) help;exit 1 ;;
+		esac
+	done
+
+	if [ "$l_" == "" ] || [ "$r_" == "" ]
+	then
+		echo "input a link and a resolution"
+		help
+	else
+		echo -e "link: $l_ \nresolution: $r_"
+		python /home/chakrak/ws/proj/py/Youtube-downloader/gpu/main.py -l "$l_" -r "$r_"
+	fi
+}
+
+function help(){
+	echo "usage : ytd -l youtube_link -r resolution"
+	echo "resolution : 1080p 1440p 2160p"
+}
+
+main "$@"
