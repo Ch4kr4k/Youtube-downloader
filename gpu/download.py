@@ -39,7 +39,12 @@ def driver(link, resolution):
     a = (a + ".mp4")
     tmp = ("/tmp/" + v)
     tmp1 = ("/tmp/" + a)
-
+    if "\"" in video_object.title:
+        t = video_object.title.replace("\"", "")
+    if "/" in video_object.title:
+        t = video_object.title.replace("/", "")
+    title = (t + ".mp4")
+    res = (f'{final_path}/"{title}"')
     try:
         print("Downloading Video and audio")
         print(tmp)
@@ -52,9 +57,7 @@ def driver(link, resolution):
         audio_only = video_object.streams.filter(
             only_audio=True).last().download(tmp0, a)
         print("completed")
-        t = video_object.title
-        title = (t + ".mp4")
-        res = (f'{final_path}/"{title}"')
+
         os.system(
             f"ffmpeg -i {tmp} -i {tmp1} -c copy -c:v h264_nvenc -map 0:v:0 -map 1:a:0 {res}")
         re(tmp, tmp1)
