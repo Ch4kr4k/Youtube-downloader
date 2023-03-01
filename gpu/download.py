@@ -50,7 +50,7 @@ def driver(link, resolution):
             resolution=f"{resolution}").first().download(tmp0, v)
         print(tmp1)
         audio_only = video_object.streams.filter(
-            only_audio=True).first().download(tmp0, a)
+            only_audio=True).last().download(tmp0, a)
         print("completed")
         t = video_object.title
         title = (t + ".mp4")
