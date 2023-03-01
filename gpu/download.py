@@ -39,13 +39,15 @@ def driver(link, resolution):
     a = (a + ".mp4")
     tmp = ("/tmp/" + v)
     tmp1 = ("/tmp/" + a)
-    t = ""
     if "\"" in video_object.title:
         t = video_object.title.replace("\"", "")
     if "/" in video_object.title:
         t = video_object.title.replace("/", "")
+    else:
+        t = video_object.title
     title = (t + ".mp4")
     res = (f'{final_path}/"{title}"')
+    print(f"final output = {res}")
     try:
         print("Downloading Video and audio")
         print(tmp)
