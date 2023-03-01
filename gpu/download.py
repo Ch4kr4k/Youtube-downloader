@@ -39,6 +39,7 @@ def driver(link, resolution):
     a = (a + ".mp4")
     tmp = ("/tmp/" + v)
     tmp1 = ("/tmp/" + a)
+    t = ""
     if "\"" in video_object.title:
         t = video_object.title.replace("\"", "")
     if "/" in video_object.title:
